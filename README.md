@@ -16,6 +16,25 @@ Full-stack project:
 
 ***
 
+flowchart LR
+%% Phase 1
+A[BeyondChats Blogs<br/>Last page: /blogs-2/page/8] -->|Phase 1: worker/scrape-beyondchats.js<br/>Scrape 5 oldest| B[(MySQL DB)]
+B -->|Laravel CRUD APIs| C[Laravel API<br/>/api/articles]
+
+%% Phase 2
+C -->|Fetch latest ORIGINAL article| D[Phase 2 Worker<br/>worker/phase2-rewrite.js]
+D -->|Google Search (Serper.dev)| E[Search Results]
+E -->|Pick top 2 blog/article links| F[Reference URLs]
+F -->|Scrape main content (Cheerio)| G[Reference Content]
+D -->|Call LLM (OpenAI) with original + references| H[Rewritten HTML]
+H -->|Append References section (2 links)| I[Final Rewritten Article]
+I -->|POST /api/articles (status=rewritten)| C
+
+%% Phase 3
+C -->|GET /api/articles| J[React Frontend<br/>frontend/]
+J -->|Show Original + Rewritten| K[Responsive UI Cards]
+
+
 ## Prerequisites
 
 - PHP 8.2+
