@@ -127,6 +127,5 @@ React UI:
 
 ***
 
-## GitHub push steps
 
 
